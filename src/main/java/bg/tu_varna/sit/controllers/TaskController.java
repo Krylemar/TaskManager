@@ -3,6 +3,7 @@ package bg.tu_varna.sit.controllers;
 import bg.tu_varna.sit.dto.TaskDto;
 import bg.tu_varna.sit.models.Task;
 import bg.tu_varna.sit.services.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class TaskController {
     }
 
     @PostMapping("/api/tasks")
-    public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto task) {
+    public ResponseEntity<TaskDto> createTask(@Valid @RequestBody TaskDto task) {
         TaskDto addedTask = taskService.createTask(task);
         return new ResponseEntity<>(addedTask, HttpStatus.CREATED);
     }
@@ -52,7 +53,7 @@ public class TaskController {
     }
 
     @PutMapping("/api/tasks")
-    public ResponseEntity<TaskDto> updateTask(@RequestBody TaskDto task) {
+    public ResponseEntity<TaskDto> updateTask(@Valid @RequestBody TaskDto task) {
         TaskDto updatedTask = taskService.updateTask(task);
         return new ResponseEntity<>(updatedTask, HttpStatus.OK);
     }
