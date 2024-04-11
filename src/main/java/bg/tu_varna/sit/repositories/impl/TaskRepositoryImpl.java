@@ -48,9 +48,11 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public Task updateTask(Task task) {
-        getTaskById(task.getId()).orElseThrow(() -> new ResourceNotFoundException("Task","id",id.toString()));
-        tasks.add(task);
-        return task;
+        Task existingTask = getTaskById(task.getId()).orElseThrow(() -> new ResourceNotFoundException("Task","id",id.toString()));
+        existingTask.setTitle(task.getTitle());
+        existingTask.setDescription(task.getDescription());
+        existingTask.setDeadline(task.getDeadline());
+        return existingTask;
     }
 
     @Override

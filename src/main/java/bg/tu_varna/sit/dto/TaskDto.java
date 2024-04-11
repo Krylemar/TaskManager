@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.dto;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.Date;
@@ -17,7 +17,7 @@ public class TaskDto {
     @NotEmpty(message = "Title cannot be empty!")
     private String title;
     @EqualsAndHashCode.Exclude
-    @Min(value = 10,message = "Description must be at least 10 characters long!")
+    @Size(min = 10,message = "Description must be at least 10 characters long!")
     private String description;
     @EqualsAndHashCode.Exclude
     @NotNull(message = "Deadline cannot be null!")
