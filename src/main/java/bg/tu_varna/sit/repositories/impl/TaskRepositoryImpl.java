@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.repositories.impl;
 
-import bg.tu_varna.sit.exceptions.TaskNotFoundException;
+import bg.tu_varna.sit.exceptions.ResourceNotFoundException;
 import bg.tu_varna.sit.models.Task;
 import bg.tu_varna.sit.repositories.TaskRepository;
 
@@ -48,7 +48,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public Task updateTask(Task task) {
-        getTaskById(task.getId()).orElseThrow(() -> new TaskNotFoundException("Task with id " + task.getId() + " not found"));
+        getTaskById(task.getId()).orElseThrow(() -> new ResourceNotFoundException("Task","id",id.toString()));
         tasks.add(task);
         return task;
     }
@@ -58,6 +58,6 @@ public class TaskRepositoryImpl implements TaskRepository {
         if (getTaskById(id).isPresent()){
             tasks.remove(getTaskById(id).get());
         }
-        else throw new TaskNotFoundException("Task with id " + id + " not found");
+        else throw new ResourceNotFoundException("Task","id",id.toString());
     }
 }

@@ -1,5 +1,6 @@
 package bg.tu_varna.sit.controllers;
 
+import bg.tu_varna.sit.dto.TaskDto;
 import bg.tu_varna.sit.models.Task;
 import bg.tu_varna.sit.services.TaskService;
 import org.springframework.http.HttpStatus;
@@ -18,13 +19,13 @@ public class TaskController {
     }
 
     @PostMapping("/api/tasks")
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        Task addedTask = taskService.createTask(task);
+    public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto task) {
+        TaskDto addedTask = taskService.createTask(task);
         return new ResponseEntity<>(addedTask, HttpStatus.CREATED);
     }
 
     @GetMapping("/api/tasks/all")
-    public ResponseEntity<List<Task>> getAllTasks() {
+    public ResponseEntity<List<TaskDto>> getAllTasks() {
         return new ResponseEntity<>(taskService.getAllTasks(),HttpStatus.OK);
     }
 
@@ -35,8 +36,8 @@ public class TaskController {
      * @return ResponseEntity containing the Task object with the specified ID, or a 404 status code if the task doesn't exist.
      */
     @GetMapping("/api/tasks/{id}")
-    public ResponseEntity<Task> getTaskById(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(taskService.getTaskById(id).get(),HttpStatus.OK);
+    public ResponseEntity<TaskDto> getTaskById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(taskService.getTaskById(id),HttpStatus.OK);
     }
 
     /**
@@ -51,8 +52,8 @@ public class TaskController {
     }
 
     @PutMapping("/api/tasks")
-    public ResponseEntity<Task> updateTask(@RequestBody Task task) {
-        Task updatedTask = taskService.updateTask(task);
+    public ResponseEntity<TaskDto> updateTask(@RequestBody TaskDto task) {
+        TaskDto updatedTask = taskService.updateTask(task);
         return new ResponseEntity<>(updatedTask, HttpStatus.OK);
     }
 
