@@ -4,64 +4,64 @@ import bg.tu_varna.sit.dto.TaskDto;
 import bg.tu_varna.sit.exceptions.ResourceNotFoundException;
 import bg.tu_varna.sit.models.Task;
 import bg.tu_varna.sit.repositories.TaskRepository;
-import bg.tu_varna.sit.repositories.impl.TaskRepositoryImpl;
 import bg.tu_varna.sit.services.TaskService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class TaskServiceImpl implements TaskService {
     private TaskRepository taskRepository;
     private ModelMapper mapper;
 
-    public TaskServiceImpl(ModelMapper mapper) {
-        this.taskRepository = TaskRepositoryImpl.getInstance();
+    public TaskServiceImpl(TaskRepository taskRepository, ModelMapper mapper) {
+        this.taskRepository = taskRepository;
         this.mapper = mapper;
     }
 
     @Override
     public TaskDto createTask(TaskDto taskDto) {
-        Task task = mapper.map(taskDto, Task.class);
-        Task addedTask = taskRepository.createTask(task);
-        return mapper.map(addedTask, taskDto.getClass());
+        Task task = taskRepository.save(dto2Task(taskDto));
+        return task2Dto(task);
     }
 
     @Override
     public List<TaskDto> getAllTasks() {
-        List<TaskDto> tasks = new ArrayList<>();
-        for (Task task : taskRepository.getAllTasks()){
-            tasks.add(task2Dto(task));
-        }
-        return tasks;
+        return taskRepository.findAll().stream().map(this::task2Dto).toList();
     }
 
     @Override
     public TaskDto getTaskById(Long id) {
-        Task task = taskRepository.getTaskById(id).orElseThrow(() -> new ResourceNotFoundException("Task","id",id.toString()));
+        Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task","id",id.toString()));
         return task2Dto(task);
     }
 
     @Override
     public TaskDto updateTask(TaskDto taskDto) {
-        Task task = dto2Task(taskDto);
-        task = taskRepository.updateTask(task);
-        return task2Dto(task);
+        Task existingTask = taskRepository.findById(taskDto.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Task","id",taskDto.getId().toString()));
+        mapper.map(taskDto, existingTask);
+
+        return task2Dto(taskRepository.save(existingTask));
     }
 
     @Override
     public void deleteTask(Long id) {
-        taskRepository.deleteTask(id);
+        Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task","id",id.toString()));
+        taskRepository.delete(task);
     }
 
     private Task dto2Task (TaskDto taskDto){
         return mapper.map(taskDto, Task.class);
+
     }
 
     private TaskDto task2Dto (Task task){
-        return mapper.map(task, TaskDto.class);
+        TaskDto taskDto = mapper.map(task, TaskDto.class);
+        taskDto.setCreatedAt(task.getCreatedAt());
+        taskDto.setUpdatedAt(task.getUpdatedAt());
+        return taskDto;
     }
 }

@@ -15,16 +15,17 @@
 - ~~Implement validation for task fields~~
 - ~~Use DTOs for data transfer between layers~~
 - ~~Implement exception handling~~
-- Use PostgreSQL with JPA(Hibernate) task storage
+- ~~Use PostgreSQL with JPA(Hibernate) task storage~~
+- ~~Implement report entity with fields: id, description, hours logged, date created, task id~~
   - Queries:
-   - Add report to a task
-   - Get all reports of a task
-   - Get specific report of a task
-   - Update report of a task
-   - Delete report of a task
-   - Get all reports of a task with hours logged within a specific date range
-   - Get the report of a task with the most hours logged
-   - Get total hours logged for a task by id
+    - ~~Add report to a task~~
+    - ~~Get all reports of a task~~
+    - ~~Get specific report of a task~~
+    - ~~Update report of a task~~
+    - ~~Delete report of a task~~
+    - Get all reports of a task with hours logged within a specific date range
+    - Get the report of a task with the most hours logged
+    - Get total hours logged for a task by id
 
 ### Phase 3
 - Implement user registration and authentication

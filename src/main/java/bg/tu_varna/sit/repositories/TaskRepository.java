@@ -1,14 +1,10 @@
 package bg.tu_varna.sit.repositories;
 
 import bg.tu_varna.sit.models.Task;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface TaskRepository {
-    Task createTask(Task task);
-    List<Task> getAllTasks();
-    Optional<Task> getTaskById(Long id);
-    Task updateTask(Task task);
-    void deleteTask(Long id);
+public interface TaskRepository extends JpaRepository <Task, Long>{
 }

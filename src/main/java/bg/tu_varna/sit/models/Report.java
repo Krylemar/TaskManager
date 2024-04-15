@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.time.Instant;
 
+@ComponentScan
 @Entity
 @Table(name = "reports")
 @Getter
@@ -26,13 +28,23 @@ public class Report {
 
     @EqualsAndHashCode.Exclude
     @CreationTimestamp
-    private Instant dateCreated;
+    private Instant createdAt;
 
     @EqualsAndHashCode.Exclude
     @UpdateTimestamp
-    private Instant dateUpdated;
+    private Instant updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "task_id", nullable = false)
     private Task task;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = Instant.now();
+    }
 }

@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
+@ComponentScan
 @Entity
 @Table(name = "tasks")
 @NoArgsConstructor
@@ -33,19 +35,27 @@ public class Task {
     @EqualsAndHashCode.Exclude
     private Date deadline;
 
-    @Getter(AccessLevel.PRIVATE)
     @Setter(AccessLevel.NONE)
     @CreationTimestamp
     @EqualsAndHashCode.Exclude
     private Instant createdAt;
 
-    @Getter(AccessLevel.PRIVATE)
     @Setter(AccessLevel.PRIVATE)
     @UpdateTimestamp
     @EqualsAndHashCode.Exclude
     private Instant updatedAt;
 
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "reports", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Report> reports;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = Instant.now();
+    }
 }

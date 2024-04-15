@@ -1,7 +1,6 @@
 package bg.tu_varna.sit.controllers;
 
 import bg.tu_varna.sit.dto.TaskDto;
-import bg.tu_varna.sit.models.Task;
 import bg.tu_varna.sit.services.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
