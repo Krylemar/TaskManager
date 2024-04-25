@@ -1,6 +1,7 @@
 package bg.tu_varna.sit.controllers;
 
 import bg.tu_varna.sit.dto.TaskDto;
+import bg.tu_varna.sit.models.Report;
 import bg.tu_varna.sit.services.ReportService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import bg.tu_varna.sit.dto.ReportDto;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -74,9 +76,24 @@ public class ReportController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    //Get all reports of a task with hours logged within a specific date range
     @GetMapping()
-    public ResponseEntity<List<ReportDto>> getReportsOfTaskBetweenDates(){
-        return new ResponseEntity<>;
+    public ResponseEntity<List<ReportDto>> getReportsOfTaskBetweenDates(Long taskId, Instant firstDate, Instant secondDate){
+        List<ReportDto> reports = reportService.getReportsOfTaskBetweenDates(taskId, firstDate, secondDate);
+        return new ResponseEntity<>(reports, HttpStatus.OK);
     }
 
+    //- Get the report of a task with the most hours logged
+    @GetMapping
+    public ResponseEntity<ReportDto> getReportOfTaskWithMostHoursLogged(Long taskId){
+        ReportDto report = reportService.getReportOfTaskWithMostHoursLogged(taskId);
+        return new ResponseEntity<>(report, HttpStatus.OK);
+    }
+
+    //- Get total hours logged for a task by id
+    @GetMapping
+    public ResponseEntity<Integer> getTotalHoursOfATaskById(Long taskId){
+        Integer hours = reportService.findTotalHoursOfTask(taskId);
+        return new ResponseEntity<>(hours, HttpStatus.OK);
+    }
 }

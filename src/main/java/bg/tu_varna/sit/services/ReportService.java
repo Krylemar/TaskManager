@@ -14,4 +14,6 @@ public interface ReportService {
     void deleteReportOfTaskById(Long id);
     TaskDto getTaskOfReportById(Long id);
     List<ReportDto> getReportsOfTaskBetweenDates(Long taskId, Instant firstDate, Instant secondDate);
+    ReportDto getReportOfTaskWithMostHoursLogged(Long taskId);
+    Integer findTotalHoursOfTask(Long taskId);
 }

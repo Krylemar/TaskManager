@@ -62,6 +62,16 @@ public class ReportServiceImpl implements ReportService{
         return reportRepository.getAllReportsOfTaskBetweenCreationDates(firstDate, secondDate).stream().map(this::report2Dto).toList();
     }
 
+    @Override
+    public ReportDto getReportOfTaskWithMostHoursLogged(Long taskId) {
+        return report2Dto(reportRepository.findReportWithMostHoursLogged(taskId));
+    }
+
+    @Override
+    public Integer findTotalHoursOfTask(Long taskId){
+        return reportRepository.findTotalHoursOfTask(taskId);
+    }
+
     private Report dto2Report (ReportDto reportDto){
         return mapper.map(reportDto, Report.class);
     }
